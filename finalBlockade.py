@@ -84,7 +84,6 @@ def setInitialState():
         else:
          numPyArray.append(walls)
          numPyArray.append(positionsEnd)
-    # a = np.array([positions, walls, row,tableWalls])
     global a
     a = np.array(numPyArray)
 
@@ -213,8 +212,6 @@ def potez():
             print("Zauzeto polje")
         else:
             control = False
-    #pozivanje funkcije koja validira unete koordinate i ceo POTEZ!!!
-    #ako je ok onda zapamtimo koordinate u current
 
     if initial["currentPlayer"] ==  "X":
         if initial['currentPawn'] == 1: 
@@ -318,8 +315,6 @@ def potez():
     vrsta = input("Izaberi zid, U za uspravni ili P za polozeni zid: ")
     zid = [input("Unesi koordinatu X zida:"),input("Unesi koordinatu Y zida:")]
     
-    #poziv fje koja validira stavljanje zida na te koordinate 
-    #ako moze, pamtimo zid u sledecem koraku 
 
     #region setovanje zidova i stavljanje na tablu 
     if vrsta == "U":
@@ -355,11 +350,4 @@ def game():
         if checkEndOfGame():
             control = False
 
-
-
-
-    
-    
-
-#checkEndOfGame()
-
+game()
