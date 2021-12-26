@@ -4,7 +4,8 @@ from numpy.lib.function_base import append
 initial = {
     "heightOfTable": 0,
     "widthOfTable": 0,
-    "numberOfWalls": 0,
+    "numberOfWallsX": 0,
+    "numberOfWallsO": 0,
     "initialPositionOfPlayerX" : [],
     "initialPositionOfPlayerO" : []
 }
@@ -12,6 +13,16 @@ initial = {
 def setInitialTable():
     initial["widthOfTable"] = input("Please enter width of table: ")
     initial["heightOfTable"] = input("Please enter height of table: ")
+    initial["numberOfWallsX"] = input("Please enter number of walls : ")
+    initial["numberOfWallsO"] = initial["numberOfWallsX"] 
+    initial["initialPositionOfPlayerX"].insert(
+        0, [input("Please enter coordinate 1 of first pawn X: "), input("Please enter coordinate 2 of first pawn X: ")])
+    initial["initialPositionOfPlayerX"].insert(
+        1, [input("Please enter coordinate 1 of second pawn X: "), input("Please enter coordinate 2 of second pawn X:")])
+    initial["initialPositionOfPlayerO"].insert(
+        0, [input("Please enter coordinate 1 of first pawn Y: "), input("Please enter coordinate 2 of first pawn Y: ")])
+    initial["initialPositionOfPlayerO"].insert(
+        1, [input("Please enter coordinate 1 of second pawn Y: "), input("Please enter coordinate 2 of second pawn Y: ")])
 
     #region SIRINA iscrtavanje 
 
@@ -60,12 +71,28 @@ def setInitialTable():
          numPyArray.append(positionsEnd)
     # a = np.array([positions, walls, row,tableWalls])
     a = np.array(numPyArray)
-    table = str(a).replace('[', '').replace(']', '').replace(',', '').replace('(', '').replace(')', '').replace('list', '').replace("'",'')
-    print(table)
 
 
     #endregion VISINA iscrtavanje
 
+    #region PESACI 
+    koordinatePesak1X = initial["initialPositionOfPlayerX"][0]
+    koordinatePesak2X = initial["initialPositionOfPlayerX"][1]
+    koordinatePesak1O = initial["initialPositionOfPlayerO"][0]
+    koordinatePesak2O = initial["initialPositionOfPlayerO"][1]
+    
+    a[int(koordinatePesak1X[0])*2][int(koordinatePesak1X[1])*2+1] = '🔴'
+
+    a[int(koordinatePesak2X[0])*2][int(koordinatePesak2X[1])*2+1] = '🔴'
+
+    a[int(koordinatePesak1O[0])*2][int(koordinatePesak1O[1])*2+1] = '🟠'
+
+    a[int(koordinatePesak2O[0])*2][int(koordinatePesak2O[1])*2+1] = '🟠'
+
+    table = str(a).replace('[', '').replace(']', '').replace(',', '').replace('(', '').replace(')', '').replace('list', '').replace("'",'')
+    print(table)
+
+    
 
     
 setInitialTable()
