@@ -9,8 +9,10 @@ initial = {
     "numberOfWallsO": 0,
     "initialPositionOfPlayerX" : [],
     "initialPositionOfPlayerO" : [],
-    "currentPositionOfPlayerX": [],
-    "currentPositionOfPlayerO": [],
+    "currentPositionOfPlayerX-pesak1": [],
+    "currentPositionOfPlayerX-pesak2": [],
+    "currentPositionOfPlayerO-pesak1": [],
+    "currentPositionOfPlayerO-pesak2": [],
     "horisontalWalls": [],
     "verticalWalls": [],
     "currentPlayer": "X",
@@ -30,6 +32,12 @@ def setInitialValues():
         0, [input("Please enter coordinate 1 of first pawn Y: "), input("Please enter coordinate 2 of first pawn Y: ")])
     initial["initialPositionOfPlayerO"].insert(
         1, [input("Please enter coordinate 1 of second pawn Y: "), input("Please enter coordinate 2 of second pawn Y: ")])
+
+    initial['currentPositionOfPlayerX-pesak1'] = initial['initialPositionOfPlayerX'][0]
+    initial['currentPositionOfPlayerX-pesak2'] = initial['initialPositionOfPlayerX'][1]
+    initial['currentPositionOfPlayerO-pesak1'] = initial['initialPositionOfPlayerO'][0]
+    initial['currentPositionOfPlayerO-pesak2'] = initial['initialPositionOfPlayerO'][1]
+    
 
 def setInitialState():  
 
@@ -77,20 +85,22 @@ def setInitialState():
          numPyArray.append(walls)
          numPyArray.append(positionsEnd)
     # a = np.array([positions, walls, row,tableWalls])
+    global a
     a = np.array(numPyArray)
 
 
     #endregion VISINA iscrtavanje
 
     #region PESACI 
-    koordinatePesak1X = initial["initialPositionOfPlayerX"][0]
-    koordinatePesak2X = initial["initialPositionOfPlayerX"][1]
-    koordinatePesak1O = initial["initialPositionOfPlayerO"][0]
-    koordinatePesak2O = initial["initialPositionOfPlayerO"][1]
-    
-    a[int(koordinatePesak1X[0])*2][int(koordinatePesak1X[1])*2+1] = '🔴'
+    koordinatePesak1X = initial['currentPositionOfPlayerX-pesak1']
+    koordinatePesak2X = initial['currentPositionOfPlayerX-pesak2']
+    koordinatePesak1O = initial['currentPositionOfPlayerO-pesak1']
+    koordinatePesak2O = initial['currentPositionOfPlayerO-pesak2']
 
-    a[int(koordinatePesak2X[0])*2][int(koordinatePesak2X[1])*2+1] = '🔴'
+
+    a[int(koordinatePesak1X[0])*2][int(koordinatePesak1X[1])*2+1] = '🟡'
+
+    a[int(koordinatePesak2X[0])*2][int(koordinatePesak2X[1])*2+1] = '🟡'
 
     a[int(koordinatePesak1O[0])*2][int(koordinatePesak1O[1])*2+1] = '🟠'
 
@@ -105,12 +115,13 @@ def setInitialState():
 
     global table 
     table = str(a).replace('[', '').replace(']', '').replace(',', '').replace('(', '').replace(')', '').replace('list', '').replace("'",'')
-   
+    print(table)
+    
 
 def checkEndOfGame():
-    if initial["currentPositionOfPlayerX"][0] or initial["currentPositionOfPlayerX"][1] == initial["initialPositionOfPlayerO"][0] or initial["initialPositionOfPlayerO"][1]:
+    if initial["currentPositionOfPlayerX-pesak1"] or initial["currentPositionOfPlayerX-pesak2"] == initial["initialPositionOfPlayerO-pesak1"] or initial["initialPositionOfPlayerO-pesak2"]:
         print("Game is over! The winner of the game is the player X")
-    if initial["currentPositionOfPlayerO"][0] or initial["currentPositionOfPlayerO"][1] == initial["initialPositionOfPlayerX"][0] or initial["initialPositionOfPlayerX"][1]:
+    if initial["currentPositionOfPlayerO-pesak1"] or initial["currentPositionOfPlayerO-pesak2"] == initial["initialPositionOfPlayerX-pesak1"] or initial["initialPositionOfPlayerX-pesak2"]:
         print("Game is over! The winner of the game is the player O")
     
 
@@ -124,9 +135,10 @@ def State(vrstaZida):
             y = lista[1]
             print('Uspravni zid: ║ ')
             if initial["currentPawn"] == 1:
-                print(f'Potez: [ {initial["currentPlayer"]} {initial["currentPawn"]} ]  [ {initial["currentPositionOfPlayerX"][0]}  {initial["currentPositionOfPlayerX"][1]} [ Z  {x} {y} ] ]')
-            elif initial['currentPawn'] == 2:
-                print(f'Potez: [ {initial["currentPlayer"]} {initial["currentPawn"]} ]  [ {initial["currentPositionOfPlayerX"][0]}  {initial["currentPositionOfPlayerX"][1]} [ Z  {x} {y} ] ]')
+                print(f'Potez: [ {initial["currentPlayer"]} {initial["currentPawn"]} ]   {initial["currentPositionOfPlayerX-pesak1"]}  [ Z  {x} {y} ] ')
+            elif initial["currentPawn"] == 2:
+                print(initial['currentPositionOfPlayerX-pesak2'])
+                print(f'Potez: [ {initial["currentPlayer"]} {initial["currentPawn"]} ]   {initial["currentPositionOfPlayerX-pesak2"]}  [ Z  {x} {y} ] ')
         else: 
             print('Polozeni zid:  ══')
             duzinaliste = len(initial["horisontalWalls"]) - 1
@@ -134,9 +146,9 @@ def State(vrstaZida):
             x = lista[0]
             y = lista[1]
             if initial["currentPawn"] == 1:
-                 print(f'Potez: [ {initial["currentPlayer"]} {initial["currentPawn"]} ]  [ {initial["currentPositionOfPlayerX"][0]}  {initial["currentPositionOfPlayerX"][1]} [ P  {x} {y} ] ]')
+                 print(f'Potez: [ {initial["currentPlayer"]} {initial["currentPawn"]} ]   {initial["currentPositionOfPlayerX-pesak1"]}   [ P  {x} {y} ] ')
             elif initial['currentPawn'] == 2:
-                print(f'Potez: [ {initial["currentPlayer"]} {initial["currentPawn"]} ]  [ {initial["currentPositionOfPlayerX"][0]}  {initial["currentPositionOfPlayerX"][1]} [ P  {x} {y} ] ]')
+                print(f'Potez: [ {initial["currentPlayer"]} {initial["currentPawn"]} ]   {initial["currentPositionOfPlayerX-pesak2"]}     [ P  {x} {y} ] ')
     
     
     if initial["currentPlayer"] == "O": 
@@ -147,9 +159,9 @@ def State(vrstaZida):
             y = lista[1]
             print('Uspravni zid: ║ ')
             if initial["currentPawn"] == 1:
-                print(f'Potez: [ {initial["currentPlayer"]} {initial["currentPawn"]} ]  [ {initial["currentPositionOfPlayerO"][0]}  {initial["currentPositionOfPlayerO"][1]} [ Z  {x} {y} ] ]')
+                print(f'Potez: [ {initial["currentPlayer"]} {initial["currentPawn"]} ]   {initial["currentPositionOfPlayerO-pesak1"]}  [ Z  {x} {y} ] ]')
             elif initial['currentPawn'] == 2:
-                print(f'Potez: [ {initial["currentPlayer"]} {initial["currentPawn"]} ]  [ {initial["currentPositionOfPlayerO"][0]}  {initial["currentPositionOfPlayerO"][1]} [ Z  {x} {y} ] ]')
+                print(f'Potez: [ {initial["currentPlayer"]} {initial["currentPawn"]} ]   {initial["currentPositionOfPlayerO-pesak2"]}  [ Z  {x} {y} ] ]')
         else: 
             print('Polozeni zid:  ══')
             duzinaliste = len(initial["horisontalWalls"]) - 1
@@ -157,9 +169,9 @@ def State(vrstaZida):
             x = lista[0]
             y = lista[1]
             if initial["currentPawn"] == 1:
-                 print(f'Potez: [ {initial["currentPlayer"]} {initial["currentPawn"]} ]  [ {initial["currentPositionOfPlayerO"][0]}  {initial["currentPositionOfPlayerO"][1]} [ P  {x} {y} ] ]')
+                 print(f'Potez: [ {initial["currentPlayer"]} {initial["currentPawn"]} ]   {initial["currentPositionOfPlayerO-pesak1"]}   [ P  {x} {y} ] ]')
             elif initial['currentPawn'] == 2:
-                print(f'Potez: [ {initial["currentPlayer"]} {initial["currentPawn"]} ]  [ {initial["currentPositionOfPlayerO"][0]}  {initial["currentPositionOfPlayerO"][1]} [ P  {x} {y} ] ]') 
+                print(f'Potez: [ {initial["currentPlayer"]} {initial["currentPawn"]} ]   {initial["currentPositionOfPlayerO-pesak2"]}   [ P  {x} {y} ] ]') 
 
 def ValidMovePawn(x,y):
     if x < 0 or x > int(initial["heightOfTable"]):
@@ -168,9 +180,86 @@ def ValidMovePawn(x,y):
     if y < 0 or y > int(initial["widthOfTable"]):
         print("Inputed coordinates are not valid.")
 
+def potez(): 
+    pesak = input("Unesi broj pesaka kojim zelis da odigras potez, 1 ili 2: ")
+    initial['currentPawn'] = int(pesak)
+    pesakX = input("Unesi X koordinatu pesaka:")
+    pesakY = input("Unesi Y koordinatu pesaka:")
 
+    #pozivanje funkcije koja validira unete koordinate i ceo POTEZ!!!
+    #ako je ok onda zapamtimo koordinate u current
+
+    if initial["currentPlayer"] ==  "X":
+        if initial['currentPawn'] == 1: 
+            a[int(initial['currentPositionOfPlayerX-pesak1'][0])*2][int(initial['currentPositionOfPlayerX-pesak1'][1])*2+1]='••'
+
+            initial["currentPositionOfPlayerX-pesak1"][0] = pesakX
+            initial["currentPositionOfPlayerX-pesak1"][1] = pesakY
+            
+            a[int(pesakX)*2][int(pesakY)*2+1] = '🟡'
+            table = str(a).replace('[', '').replace(']', '').replace(',', '').replace('(', '').replace(')', '').replace('list', '').replace("'",'')
+
+        elif initial["currentPawn"] == 2:
+            a[int(initial['currentPositionOfPlayerX-pesak2'][0])*2][int(initial['currentPositionOfPlayerX-pesak2'][1])*2+1]='••'
+
+            initial["currentPositionOfPlayerX-pesak2"] = pesakX
+            initial["currentPositionOfPlayerX-pesak2"] = pesakY
+
+            a[int(pesakX)*2][int(pesakY)*2+1] = '🟡'
+            table = str(a).replace('[', '').replace(']', '').replace(',', '').replace('(', '').replace(')', '').replace('list', '').replace("'",'')
+    else:
+        if initial['currentPawn'] == 1: 
+            a[int(initial['currentPositionOfPlayerO-pesak1'][0])*2][int(initial['currentPositionOfPlayerO-pesak1'][1])*2+1]='••'
+
+            initial['currentPositionOfPlayerO-pesak1'] = pesakX
+            initial['currentPositionOfPlayerO-pesak1'] = pesakY
+
+            a[int(pesakX)*2][int(pesakY)*2+1] = '🟠'
+            table = str(a).replace('[', '').replace(']', '').replace(',', '').replace('(', '').replace(')', '').replace('list', '').replace("'",'')
+
+        elif initial["currentPawn"] == 2:
+            a[int(initial['currentPositionOfPlayerO-pesak2'][0])*2][int(initial['currentPositionOfPlayerO-pesak2'][1])*2+1]='••'
+
+            initial['currentPositionOfPlayerO-pesak2'] = pesakX
+            initial['currentPositionOfPlayerO-pesak2'] = pesakY
+
+            a[int(pesakX)*2][int(pesakY)*2+1] = '🟠'
+            table = str(a).replace('[', '').replace(']', '').replace(',', '').replace('(', '').replace(')', '').replace('list', '').replace("'",'')
+
+    vrsta = input("Izaberi zid, U za uspravni ili P za polozeni zid: ")
+    zid = [input("Unesi koordinatu X zida:"),input("Unesi koordinatu Y zida:")]
+    
+    #poziv fje koja validira stavljanje zida na te koordinate 
+    #ako moze, pamtimo zid u sledecem koraku 
+
+    #region setovanje zidova i stavljanje na tablu 
+    if vrsta == "U":
+        initial['verticalWalls'].append(zid)
+        a[(int(zid[0])*2)][int(zid[1])+3] = '║'
+        a[(int(zid[0])*2)+2][int(zid[1])+3] = '║'
+        table = str(a).replace('[', '').replace(']', '').replace(',', '').replace('(', '').replace(')', '').replace('list', '').replace("'",'')
+
+
+    else:
+        initial['horisontalWalls'].append(zid)
+        a[(int(zid[0])*2)+1][int(zid[1])] = '══  '
+        a[(int(zid[0])*2)+1][int(zid[1])+1] = '══  '
+        table = str(a).replace('[', '').replace(']', '').replace(',', '').replace('(', '').replace(')', '').replace('list', '').replace("'",'')
+
+    State(vrsta)
+    #end region setovanje zidova i stavljanje na tablu 
+    
+
+    print(table)
+
+        
+
+
+    
+    
 
 setInitialValues()    
 setInitialState()
 #checkEndOfGame()
-print(table)
+potez()
+
