@@ -121,8 +121,10 @@ def setInitialState():
 def checkEndOfGame():
     if initial["currentPositionOfPlayerX-pesak1"] or initial["currentPositionOfPlayerX-pesak2"] == initial["initialPositionOfPlayerO-pesak1"] or initial["initialPositionOfPlayerO-pesak2"]:
         print("Game is over! The winner of the game is the player X")
+        return True
     if initial["currentPositionOfPlayerO-pesak1"] or initial["currentPositionOfPlayerO-pesak2"] == initial["initialPositionOfPlayerX-pesak1"] or initial["initialPositionOfPlayerX-pesak2"]:
         print("Game is over! The winner of the game is the player O")
+        return True
     
 
 def State(vrstaZida):
@@ -173,25 +175,68 @@ def State(vrstaZida):
             elif initial['currentPawn'] == 2:
                 print(f'Potez: [ {initial["currentPlayer"]} {initial["currentPawn"]} ]   {initial["currentPositionOfPlayerO-pesak2"]}   [ P  {x} {y} ] ]') 
 
-def ValidMovePawn(x,y):
+#region ValidMove
+
+def ValidMoveWall(x,y,vrstaZida):
     if x < 0 or x > int(initial["heightOfTable"]):
         print("Inputed coordinates are not valid.")
         
     if y < 0 or y > int(initial["widthOfTable"]):
         print("Inputed coordinates are not valid.")
 
+    if vrstaZida=="U":
+        for element in initial['verticalWalls']:
+            if element[0]==x and element[1]==y:
+                print("Na unetom polju u tabeli vec postoji zid! ")
+    if vrstaZida=="P":
+        for element in initial['horisontalWalls']:
+            if element[0]==x and element[1]==y:
+                print("Na unetom polju u tabeli vec postoji zid! ")
+
+#endregion ValidMove
+
 def potez(): 
     pesak = input("Unesi broj pesaka kojim zelis da odigras potez, 1 ili 2: ")
     initial['currentPawn'] = int(pesak)
-    pesakX = input("Unesi X koordinatu pesaka:")
-    pesakY = input("Unesi Y koordinatu pesaka:")
 
+
+    control = True
+    while(control):
+        pesakX = input("Unesi X koordinatu pesaka:")
+        pesakY = input("Unesi Y koordinatu pesaka:")
+
+        if int(pesakX) < 0 or int(pesakX) > int(initial['heightOfTable']):
+            print("Pogresna X koordinata")
+        elif int(pesakY) < 0 or int(pesakY) > int(initial["widthOfTable"]):
+            print("Pogresna y koordinata")
+        elif a[int(pesakX)*2][int(pesakY)*2+1] != "••":
+            print("Zauzeto polje")
+        else:
+            control = False
     #pozivanje funkcije koja validira unete koordinate i ceo POTEZ!!!
     #ako je ok onda zapamtimo koordinate u current
 
     if initial["currentPlayer"] ==  "X":
         if initial['currentPawn'] == 1: 
+            control = True
+            while(control):
+
+                pesakX = input("Unesi X koordinatu pesaka:")
+                pesakY = input("Unesi Y koordinatu pesaka:")
+
+                if abs(int(initial['currentPositionOfPlayerX-pesak1'[0]])-int(pesakX) > 2):
+                    print("Premasen opseg poteza")
+                elif abs(int(initial['currentPositionOfPlayerX-pesak1'[1]])-int(pesakY) > 2):
+                    print("Premasen opseg poteza")
+                elif abs(int(initial['currentPositionOfPlayerX-pesak1'[0]]-int(pesakX))) and abs(int(initial['currentPositionOfPlayerX-pesak1'[0]]-int(pesakY))) != 1:
+                    print("Premasen opseg poteza")
+                else:
+                    control = False
+                
+
             a[int(initial['currentPositionOfPlayerX-pesak1'][0])*2][int(initial['currentPositionOfPlayerX-pesak1'][1])*2+1]='••'
+
+                
 
             initial["currentPositionOfPlayerX-pesak1"][0] = pesakX
             initial["currentPositionOfPlayerX-pesak1"][1] = pesakY
@@ -200,15 +245,45 @@ def potez():
             table = str(a).replace('[', '').replace(']', '').replace(',', '').replace('(', '').replace(')', '').replace('list', '').replace("'",'')
 
         elif initial["currentPawn"] == 2:
-            a[int(initial['currentPositionOfPlayerX-pesak2'][0])*2][int(initial['currentPositionOfPlayerX-pesak2'][1])*2+1]='••'
 
-            initial["currentPositionOfPlayerX-pesak2"] = pesakX
-            initial["currentPositionOfPlayerX-pesak2"] = pesakY
+             control = True
+             while(control):
 
-            a[int(pesakX)*2][int(pesakY)*2+1] = '🟡'
-            table = str(a).replace('[', '').replace(']', '').replace(',', '').replace('(', '').replace(')', '').replace('list', '').replace("'",'')
+                pesakX = input("Unesi X koordinatu pesaka:")
+                pesakY = input("Unesi Y koordinatu pesaka:")
+
+                if abs(int(initial['currentPositionOfPlayerX-pesak2'[0]])-int(pesakX) > 2):
+                    print("Premasen opseg poteza")
+                elif abs(int(initial['currentPositionOfPlayerX-pesak2'[1]])-int(pesakY) > 2):
+                    print("Premasen opseg poteza")
+                elif abs(int(initial['currentPositionOfPlayerX-pesak2'[0]]-int(pesakX))) and abs(int(initial['currentPositionOfPlayerX-pesak2'[0]]-int(pesakY))) != 1:
+                    print("Premasen opseg poteza")
+                else:
+                    control = False
+
+             a[int(initial['currentPositionOfPlayerX-pesak2'][0])*2][int(initial['currentPositionOfPlayerX-pesak2'][1])*2+1]='••'
+
+             initial["currentPositionOfPlayerX-pesak2"] = pesakX
+             initial["currentPositionOfPlayerX-pesak2"] = pesakY
+
+             a[int(pesakX)*2][int(pesakY)*2+1] = '🟡'
+             table = str(a).replace('[', '').replace(']', '').replace(',', '').replace('(', '').replace(')', '').replace('list', '').replace("'",'')
     else:
-        if initial['currentPawn'] == 1: 
+        if initial['currentPawn'] == 1:
+            control = True
+            while(control):
+
+                pesakX = input("Unesi X koordinatu pesaka:")
+                pesakY = input("Unesi Y koordinatu pesaka:")
+
+                if abs(int(initial['currentPositionOfPlayerO-pesak1'[0]])-int(pesakX) > 2):
+                    print("Premasen opseg poteza")
+                elif abs(int(initial['currentPositionOfPlayerO-pesak1'[1]])-int(pesakY) > 2):
+                    print("Premasen opseg poteza")
+                elif abs(int(initial['currentPositionOfPlayerO-pesak1'[0]]-int(pesakX))) and abs(int(initial['currentPositionOfPlayerO-pesak1'[0]]-int(pesakY))) != 1:
+                    print("Premasen opseg poteza")
+                else:
+                    control = False 
             a[int(initial['currentPositionOfPlayerO-pesak1'][0])*2][int(initial['currentPositionOfPlayerO-pesak1'][1])*2+1]='••'
 
             initial['currentPositionOfPlayerO-pesak1'] = pesakX
@@ -218,6 +293,20 @@ def potez():
             table = str(a).replace('[', '').replace(']', '').replace(',', '').replace('(', '').replace(')', '').replace('list', '').replace("'",'')
 
         elif initial["currentPawn"] == 2:
+            control = True
+            while(control):
+
+                pesakX = input("Unesi X koordinatu pesaka:")
+                pesakY = input("Unesi Y koordinatu pesaka:")
+
+                if abs(int(initial['currentPositionOfPlayerO-pesak1'[0]])-int(pesakX) > 2):
+                    print("Premasen opseg poteza")
+                elif abs(int(initial['currentPositionOfPlayerO-pesak1'[1]])-int(pesakY) > 2):
+                    print("Premasen opseg poteza")
+                elif abs(int(initial['currentPositionOfPlayerO-pesak1'[0]]-int(pesakX))) and abs(int(initial['currentPositionOfPlayerO-pesak1'[0]]-int(pesakY))) != 1:
+                    print("Premasen opseg poteza")
+                else:
+                    control = False 
             a[int(initial['currentPositionOfPlayerO-pesak2'][0])*2][int(initial['currentPositionOfPlayerO-pesak2'][1])*2+1]='••'
 
             initial['currentPositionOfPlayerO-pesak2'] = pesakX
@@ -253,13 +342,24 @@ def potez():
     print(table)
 
         
+def game(): 
+    setInitialValues()    
+    setInitialState()
+    control = True 
+    while(control):
+        potez()
+        if(initial['currentPlayer']) == "X":
+            initial['currentPlayer'] = "O"
+        else:
+            initial['currentPlayer'] = "X"
+        if checkEndOfGame():
+            control = False
+
+
 
 
     
     
 
-setInitialValues()    
-setInitialState()
 #checkEndOfGame()
-potez()
 
